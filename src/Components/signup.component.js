@@ -2,6 +2,8 @@ import React, { Component} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 // import  { Redirect } from 'react-router-dom'
 import * as Yup from "yup";
+import { connect } from 'react-redux';
+
 // import { string } from "yup/lib/locale";
 // import { getDefaultNormalizer } from "@testing-library/react";
 
@@ -47,7 +49,7 @@ const LoginSchema = Yup.object().shape({
 //         localStorage.setItem('password',password);
 //   }
 
-export default class SignUp extends Component {
+class SignUp extends Component {
   constructor(props){
     super(props)
     this.handleChange=this.handleChange.bind(this);
@@ -130,8 +132,13 @@ export default class SignUp extends Component {
    
     //   // this.setState({ [input.email]: value});
     // };
-    
+    static mapStateToProps = state => {
+      return {
+      count: state.count
+      }
+      }
     render() {
+      const {count} = this.props;
 
         return (
             <Formik
@@ -146,6 +153,7 @@ export default class SignUp extends Component {
               {({ touched, errors, isSubmitting }) => (
             <Form onSubmit={this.handleFormSubmit} action="/sign-in">
                 <h3>Register</h3>
+                <div>{count}</div>
 
                 <div className="form-group">
                     {/* <label>First name</label>
@@ -234,3 +242,6 @@ export default class SignUp extends Component {
     }
 
 }
+export default connect(
+  SignUp.mapStateToProps,
+  )(SignUp)

@@ -1,7 +1,11 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 import { Table } from 'react-bootstrap';
-function DataFetching(){
+import { connect } from 'react-redux';
+function mapStateToProps(state) {
+  return { count: state.count };
+}
+function DataFetching({count}){
     const[posts,setPosts] = useState([]);
     useEffect(()=>
     {
@@ -31,7 +35,8 @@ function DataFetching(){
     <Table striped bordered hover>
   <thead>
     <tr>
-      <th>ID</th>
+      <th>{count}</th>
+      {/* <th>ID</th> */}
       <th>Name</th>
       <th>Email</th>
     </tr>
@@ -48,4 +53,5 @@ function DataFetching(){
 </div>
     );
 }
-export default DataFetching;
+// export default DataFetching;
+export default connect(mapStateToProps)(DataFetching);

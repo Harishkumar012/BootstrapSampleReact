@@ -2,6 +2,7 @@ import React, { Component} from "react";
 import { Formik, Form,ErrorMessage } from "formik";
 // import  { Redirect } from 'react-router-dom';
 // import { useHistory } from "react-router-dom";
+import { connect } from 'react-redux';
 import { Redirect } from "react-router";
 import * as Yup from "yup";
 
@@ -14,7 +15,7 @@ const LoginSchema = Yup.object().shape({
       .required("Password is required")
   });
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props){
     super(props)
     this.handleChange=this.handleChange.bind(this);
@@ -97,13 +98,22 @@ renderRedirect1 = () => {
   }
   
 }
+static mapStateToProps = state => {
+  return {
+  count: state.count
+  }
+  }
+
 
 
     render() {
+const {count} = this.props;
+console.log(count);
+
         return (
 <div>
                 <h3>Log in</h3>
-
+                <div>{count}</div>
                 <Formik
               initialValues={{ email: "", password: "" }}
               validationSchema={LoginSchema}
@@ -154,9 +164,13 @@ renderRedirect1 = () => {
                   <div className="form-group">
                   <button type="submit" className="btn btn-dark btn-lg btn-block">Log In</button>
                   </div>
+                  
                 </Form>
               )}
             </Formik>   
             </div>    );
     }
 }
+export default connect(
+  Login.mapStateToProps,
+  )(Login)

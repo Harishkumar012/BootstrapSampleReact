@@ -1,4 +1,5 @@
 import React from 'react';
+import {Redirect}   from "react-router";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -51,7 +52,8 @@ class SignUp extends React.Component {
         super();
         this.state = {
           fields: {},
-          errors: {}
+          errors: {},
+          redirect: false
         }
     
         this.handleChange = this.handleChange.bind(this);
@@ -72,6 +74,8 @@ class SignUp extends React.Component {
         e.preventDefault();
         if (this.validateForm()) {
             let fields = {};
+            this.setState({redirect:true});
+            this.renderRedirect();
             fields["firstName"] = "";
             fields["emailid"] = "";
             fields["lastName"] = "";
@@ -82,6 +86,13 @@ class SignUp extends React.Component {
     
       }
     
+      renderRedirect (){
+        if (this.state.redirect) {
+          console.log(this.state.redirect);
+            return <Redirect to='/sign-in' />
+        }
+      }
+
       validateForm() {
     
         let fields = this.state.fields;
@@ -127,17 +138,6 @@ class SignUp extends React.Component {
           }
         }
     
-        if (!fields["mobileno"]) {
-          formIsValid = false;
-          errors["mobileno"] = "*Please enter your mobile no.";
-        }
-    
-        if (typeof fields["mobileno"] !== "undefined") {
-          if (!fields["mobileno"].match(/^[0-9]{10}$/)) {
-            formIsValid = false;
-            errors["mobileno"] = "*Please enter valid mobile no.";
-          }
-        }
     
         if (!fields["password"]) {
           formIsValid = false;
@@ -150,7 +150,8 @@ class SignUp extends React.Component {
             errors["password"] = "*Please enter secure and strong password.";
           }
         }
-    
+        localStorage.setItem('emailid', fields["emailid"]);
+        localStorage.setItem('password', fields["password"]);
         this.setState({
           errors: errors
         });
@@ -180,7 +181,7 @@ render() {
               }}
             >
               {({ touched, errors, isSubmitting }) => ( */}
-        <form className={classes.form} noValidate onSubmit={this.submituserRegistrationForm} action="/sign-in">
+        <form className={classes.form}  noValidate onSubmit={this.submituserRegistrationForm} >{this.renderRedirect()}
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField

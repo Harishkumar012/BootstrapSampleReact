@@ -1,11 +1,9 @@
 import React from "react";
-import DataFetching from "./DataFetching";
-import Navigation from "../Layouts/Header";
+import MiniDrawer from "./MiniDrawer";
 export default function Dashboard() {
     return (
       <div>
-        <Navigation />
-        <DataFetching />
+        <MiniDrawer />
       </div>
     );
   }

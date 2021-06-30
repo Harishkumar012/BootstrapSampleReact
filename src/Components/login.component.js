@@ -1,6 +1,6 @@
 import React from 'react';
 // import { connect } from 'react-redux';
-// import { Redirect } from "react-router";
+import { Redirect } from "react-router";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -63,15 +63,26 @@ class Login extends React.Component {
     e.preventDefault();
     if (this.validateForm()) {
         let fields = {};
-        
         fields["emailid"] = "";
-        
         fields["password"] = "";
         this.setState({fields:fields});
         alert("Form submitted");
     }
 
   }
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+        return <Redirect to='/Dashboard' />
+    }
+    
+}
+renderRedirect1 = () => {
+  if (this.state.redirect) {
+      return <Redirect to='/sign-in' />
+  }
+  
+}
 
   validateForm() {
 
@@ -109,6 +120,29 @@ class Login extends React.Component {
       }
     }
 
+
+    const localemail=localStorage.getItem("emailid");
+    const localpass=localStorage.getItem("password");
+    // console.log(localemail);
+    // console.log(localpass);
+    // console.log(email);
+    // console.log(password);
+       if(fields["emailid"] === localemail && fields["password"] === localpass){
+        console.log("true");
+        this.setState({ redirect: true })
+        this.renderRedirect();
+        
+        // history.push('/Dashboard');
+        // return <Redirect to="/Dashboard" />;
+    }
+    else{
+      console.log("false");
+      this.setState({ redirect: false })
+      this.renderRedirect1();
+
+      // return <Redirect to="/Dashboard" />;
+    }
+
     this.setState({
       errors: errors
     });
@@ -132,7 +166,7 @@ class Login extends React.Component {
           Sign in
         </Typography>
         <form className={classes.form} noValidate onSubmit={this.submituserRegistrationForm}>
-          {/* {this.renderRedirect()} */}
+          {this.renderRedirect()}
           <TextField
             variant="outlined"
             value={this.state.fields.emailid}
